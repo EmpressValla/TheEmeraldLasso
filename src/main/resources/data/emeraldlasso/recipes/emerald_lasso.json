@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ese",
+    "sps",
+    "ese"
+  ],
+  "key": {
+    "e": {
+      "item": "minecraft:emerald"
+    },
+    "s": {
+      "item": "minecraft:string"
+    },
+    "p": {
+      "item": "minecraft:ender_pearl"
+    }
+  },
+  "result": {
+    "item": "emeraldlasso:emerald_lasso"
+  }
+}
