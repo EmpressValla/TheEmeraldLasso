@@ -22,6 +22,9 @@ public class ModItems {
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, EmeraldLasso.MOD_ID);
 
+    /**
+     * Responsible for storing a registry object that represents the Emerald Lasso item.
+     */
     public static final RegistryObject<Item> EMERALD_LASSO = ITEMS.register("emerald_lasso",
             () -> new Item(new Item.Properties().tab(ModCreativeModeTab.EMERALD_LASSO_TAB)) );
 

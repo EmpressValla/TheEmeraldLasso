@@ -19,13 +19,24 @@ import org.slf4j.Logger;
 
 import java.util.stream.Collectors;
 
-// The value here should match an entry in the META-INF/mods.toml file
+/**
+ * This class is the main entry point to the
+ * mod and contains the setup functionality
+ * as well as the shared mod ID.
+ */
 @Mod(EmeraldLasso.MOD_ID)
 public class EmeraldLasso
 {
+    /**
+     * Responsible for storing the mod ID for this mod, we provide
+     * access to this so that it can be shared to any candidates
+     * that require it.
+     */
     public static final String MOD_ID = "emeraldlasso";
 
-    // Directly reference a slf4j logger
+    /**
+     * Responsible for storing the logger that will be used.
+     */
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public EmeraldLasso()
