@@ -63,7 +63,6 @@ public class EmeraldLassoItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-
         super.appendHoverText(itemStack, level, tooltip, flag);
 
         tooltip.add(new TranslatableComponent("emeraldlasso.tooltips.pickup").setStyle(Style.EMPTY.applyFormat(ChatFormatting.YELLOW)));
@@ -78,7 +77,7 @@ public class EmeraldLassoItem extends Item {
                         EntityType.by((CompoundTag) currentEntityTag)
                                 .map(EntityType::getDescription)
                                 .orElse(new TextComponent("Unknown Entity")))
-                        .setStyle(Style.EMPTY.applyFormat(ChatFormatting.AQUA)));
+                                .setStyle(Style.EMPTY.applyFormat(ChatFormatting.AQUA)));
             }
         }
     }
@@ -132,7 +131,6 @@ public class EmeraldLassoItem extends Item {
 
     @Override
     public InteractionResult interactLivingEntity(ItemStack itemStack, Player player, LivingEntity targetEntity, InteractionHand hand) {
-
         if(player.getLevel().isClientSide()) {
             return InteractionResult.CONSUME;
         }
