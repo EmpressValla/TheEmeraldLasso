@@ -1,7 +1,7 @@
 package com.empressvalla.emeraldlasso.item;
 
 import com.empressvalla.emeraldlasso.EmeraldLasso;
-import net.minecraft.world.item.CreativeModeTab;
+import com.empressvalla.emeraldlasso.item.custom.EmeraldLassoItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -26,7 +26,7 @@ public class ModItems {
      * Responsible for storing a registry object that represents the Emerald Lasso item.
      */
     public static final RegistryObject<Item> EMERALD_LASSO = ITEMS.register("emerald_lasso",
-            () -> new Item(new Item.Properties().tab(ModCreativeModeTab.EMERALD_LASSO_TAB)) );
+            () -> new EmeraldLassoItem(new Item.Properties().tab(ModCreativeModeTab.EMERALD_LASSO_TAB)) );
 
     /**
      * This method will register the items for this mod
