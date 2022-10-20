@@ -37,7 +37,7 @@ public class EmeraldLasso
     /**
      * Responsible for storing the logger that will be used.
      */
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     public EmeraldLasso()
     {
