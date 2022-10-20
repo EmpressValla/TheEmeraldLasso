@@ -1,5 +1,11 @@
 {
   "item.emeraldlasso.emerald_lasso": "Emerald Lasso",
 
-  "itemGroup.emeraldlassotab": "Emerald Lasso Tab"
+  "itemGroup.emeraldlassotab": "Emerald Lasso Tab",
+
+  "emeraldlasso.tooltips.pickup": "Right click on an animal or villager to store them",
+
+  "emeraldlasso.tooltips.release": "Right click on a block to release a stored entity",
+
+  "emeraldlasso.tooltips.entities": "Entity: %s"
 }
