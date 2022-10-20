@@ -17,7 +17,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.WaterAnimal;
-import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -174,7 +174,7 @@ public class EmeraldLassoItem extends Item {
      * @return {@code true} if the entity is valid {@code false} otherwise.
      */
     private boolean isEntityValid(LivingEntity target) {
-        boolean mobCheck = target instanceof Animal || target instanceof Villager || target instanceof WaterAnimal;
+        boolean mobCheck = target instanceof Animal || target instanceof AbstractVillager || target instanceof WaterAnimal;
 
         return target.isAlive() && !target.isInWall() && mobCheck;
     }
