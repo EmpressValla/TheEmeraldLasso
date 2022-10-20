@@ -73,13 +73,11 @@ public class EmeraldLassoItem extends Item {
         ListTag entityList = getEntities(itemStack);
 
         if(!entityList.isEmpty()) {
-            for(int i = 0; i < entityList.size(); i++) {
-                Tag currentEntityTag = entityList.get(i);
-
+            for (Tag currentEntityTag : entityList) {
                 tooltip.add(new TranslatableComponent("emeraldlasso.tooltips.entities",
-                         EntityType.by((CompoundTag) currentEntityTag)
-                        .map(EntityType::getDescription)
-                        .orElse(new TextComponent("Unknown Entity")))
+                        EntityType.by((CompoundTag) currentEntityTag)
+                                .map(EntityType::getDescription)
+                                .orElse(new TextComponent("Unknown Entity")))
                         .setStyle(Style.EMPTY.applyFormat(ChatFormatting.AQUA)));
             }
         }
