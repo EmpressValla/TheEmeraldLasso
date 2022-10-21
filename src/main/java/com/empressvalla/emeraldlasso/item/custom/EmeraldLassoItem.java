@@ -14,7 +14,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.npc.AbstractVillager;
@@ -72,14 +72,48 @@ public class EmeraldLassoItem extends Item {
         ListTag entityList = getEntities(itemStack);
 
         if(!entityList.isEmpty()) {
+
             for (Tag currentEntityTag : entityList) {
                 tooltip.add(new TranslatableComponent("emeraldlasso.tooltips.entities",
                         EntityType.by((CompoundTag) currentEntityTag)
                                 .map(EntityType::getDescription)
                                 .orElse(new TextComponent("Unknown Entity")))
-                                .setStyle(Style.EMPTY.applyFormat(ChatFormatting.AQUA)));
+                                .setStyle(Style.EMPTY.applyFormat(ChatFormatting.LIGHT_PURPLE)));
             }
         }
+    }
+
+    @Override
+    public boolean onLeftClickEntity(ItemStack stack, Player player, Entity targetEntity) {
+        InteractionHand hand = player.getUsedItemHand();
+
+        ItemStack heldItemStack = player.getItemInHand(hand);
+
+        ListTag entityList = getEntities(heldItemStack);
+
+        boolean requirementsMet = hand == InteractionHand.MAIN_HAND && isEntityValid(targetEntity)
+                && entityList.size() != NUMBER_ALLOWED;
+
+        if(requirementsMet) {
+            if(!player.level.isClientSide()) {
+                targetEntity.stopRiding();
+
+                targetEntity.ejectPassengers();
+
+                CompoundTag entityTag = new CompoundTag();
+
+                targetEntity.save(entityTag);
+
+                entityList.add(entityTag);
+
+                targetEntity.remove(RemovalReason.DISCARDED);
+
+                saveEntities(heldItemStack, entityList);
+            }
+            return true;
+        }
+
+        return super.onLeftClickEntity(stack, player, targetEntity);
     }
 
     @Override
@@ -129,39 +163,6 @@ public class EmeraldLassoItem extends Item {
         return InteractionResult.SUCCESS;
     }
 
-    @Override
-    public InteractionResult interactLivingEntity(ItemStack itemStack, Player player, LivingEntity targetEntity, InteractionHand hand) {
-        if(player.getLevel().isClientSide()) {
-            return InteractionResult.CONSUME;
-        }
-
-        ItemStack heldItemStack = player.getItemInHand(hand);
-
-        ListTag entityList = getEntities(heldItemStack);
-
-        boolean requirementsMet = hand == InteractionHand.MAIN_HAND && isEntityValid(targetEntity);
-
-        if(!requirementsMet || entityList.size() == NUMBER_ALLOWED) {
-            return InteractionResult.FAIL;
-        }
-
-        targetEntity.stopRiding();
-
-        targetEntity.ejectPassengers();
-
-        CompoundTag entityTag = new CompoundTag();
-
-        targetEntity.save(entityTag);
-
-        entityList.add(entityTag);
-
-        targetEntity.remove(RemovalReason.DISCARDED);
-
-        saveEntities(heldItemStack, entityList);
-
-        return InteractionResult.SUCCESS;
-    }
-
     /**
      * This method is responsible for determining
      * if the entity the player is attempting to pick
@@ -171,8 +172,10 @@ public class EmeraldLassoItem extends Item {
      *
      * @return {@code true} if the entity is valid {@code false} otherwise.
      */
-    private boolean isEntityValid(LivingEntity target) {
-        boolean mobCheck = target instanceof Animal || target instanceof AbstractVillager || target instanceof WaterAnimal;
+    private boolean isEntityValid(Entity target) {
+        //Remove these cumbersome checks by adding a config file later
+        boolean mobCheck =  target instanceof Animal || target instanceof WaterAnimal ||
+                            target instanceof AbstractVillager || target instanceof NeutralMob;
 
         return target.isAlive() && !target.isInWall() && mobCheck;
     }
@@ -200,6 +203,7 @@ public class EmeraldLassoItem extends Item {
 
         return entityList;
     }
+
 
     /**
      * This method is responsible for saving
