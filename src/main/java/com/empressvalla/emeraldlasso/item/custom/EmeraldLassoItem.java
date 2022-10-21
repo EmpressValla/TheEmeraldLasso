@@ -76,9 +76,9 @@ public class EmeraldLassoItem extends Item {
             for (Tag currentEntityTag : entityList) {
                 tooltip.add(new TranslatableComponent("emeraldlasso.tooltips.entities",
                         EntityType.by((CompoundTag) currentEntityTag)
-                                .map(EntityType::getDescription)
-                                .orElse(new TextComponent("Unknown Entity")))
-                                .setStyle(Style.EMPTY.applyFormat(ChatFormatting.LIGHT_PURPLE)));
+                                  .map(EntityType::getDescription)
+                                  .orElse(new TextComponent("Unknown Entity")))
+                                  .setStyle(Style.EMPTY.applyFormat(ChatFormatting.LIGHT_PURPLE)));
             }
         }
     }

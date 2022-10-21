@@ -26,7 +26,7 @@ public class ModItems {
      * Responsible for storing a registry object that represents the Emerald Lasso item.
      */
     public static final RegistryObject<Item> EMERALD_LASSO = ITEMS.register("emerald_lasso",
-            () -> new EmeraldLassoItem(new Item.Properties().tab(ModCreativeModeTab.EMERALD_LASSO_TAB).stacksTo(1)) );
+            () -> new EmeraldLassoItem(new Item.Properties().tab(ModCreativeModeTab.EMERALD_LASSO_TAB).stacksTo(1)));
 
     /**
      * This method will register the items for this mod
