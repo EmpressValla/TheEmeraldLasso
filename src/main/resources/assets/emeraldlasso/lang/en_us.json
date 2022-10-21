@@ -3,7 +3,7 @@
 
   "itemGroup.emeraldlassotab": "Emerald Lasso Tab",
 
-  "emeraldlasso.tooltips.pickup": "Right click on an animal or villager to store them",
+  "emeraldlasso.tooltips.pickup": "Left click on an animal or villager to store them",
 
   "emeraldlasso.tooltips.release": "Right click on a block to release a stored entity",
 
