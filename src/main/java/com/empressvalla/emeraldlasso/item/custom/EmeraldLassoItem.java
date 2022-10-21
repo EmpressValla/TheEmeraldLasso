@@ -224,7 +224,8 @@ public class EmeraldLassoItem extends Item {
      */
     private static class NBTIdentifiers {
         /**
-         * The key identifier for entities.
+         * The key identifier for entities. This is the key which will point
+         * to the list of entities that are stored in an item stack.
          */
         public static final String ENTITIES = "entities";
     }
