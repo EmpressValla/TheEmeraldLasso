@@ -203,8 +203,7 @@ public class EmeraldLassoItem extends Item {
 
         return entityList;
     }
-
-
+    
     /**
      * This method is responsible for saving
      * an entity list for a given item stack.

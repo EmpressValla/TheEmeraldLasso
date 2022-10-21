@@ -9,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
  * custom and specific to this mod.
  */
 public class ModCreativeModeTab {
+
     /**
      * Responsible for storing the creative mode tab for the emerald lasso. There is only
      * one item so this sits in its own tab.
