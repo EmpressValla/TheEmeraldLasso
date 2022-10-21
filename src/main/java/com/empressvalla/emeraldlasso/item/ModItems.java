@@ -1,7 +1,7 @@
 package com.empressvalla.emeraldlasso.item;
 
 import com.empressvalla.emeraldlasso.EmeraldLasso;
-import com.empressvalla.emeraldlasso.item.custom.EmeraldLassoItem;
+import com.empressvalla.emeraldlasso.item.advanced.EmeraldLassoItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;

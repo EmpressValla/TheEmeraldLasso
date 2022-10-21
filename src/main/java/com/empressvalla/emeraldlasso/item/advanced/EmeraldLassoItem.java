@@ -1,4 +1,4 @@
-package com.empressvalla.emeraldlasso.item.custom;
+package com.empressvalla.emeraldlasso.item.advanced;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
