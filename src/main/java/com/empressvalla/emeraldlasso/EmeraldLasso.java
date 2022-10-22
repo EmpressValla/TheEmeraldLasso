@@ -29,7 +29,7 @@ public class EmeraldLasso
     /**
      * Responsible for storing the logger that will be used.
      */
-    public static final Logger LOGGER = LogUtils.getLogger();
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     public EmeraldLasso()
     {
@@ -47,8 +47,6 @@ public class EmeraldLasso
     private void setup(final FMLCommonSetupEvent event)
     {
         // some preinit code
-        LOGGER.info("HELLO FROM PREINIT");
-        LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
     }
 
 }
