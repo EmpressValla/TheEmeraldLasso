@@ -1,5 +1,6 @@
 package com.empressvalla.emeraldlasso.item.advanced;
 
+import com.empressvalla.emeraldlasso.config.EmeraldLassoCommonConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -14,10 +15,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.NeutralMob;
-import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.WaterAnimal;
-import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -33,17 +30,8 @@ import java.util.List;
  * This class is responsible for providing all functionality related to the Emerald Lasso custom
  * item. Including pickup and release.
  *
- * @implNote There is a constant provided for number allowed, which currently
- * just stores 1 but this will be replaced when a config is added for the mod.
- *
- * @see EmeraldLassoItem#NUMBER_ALLOWED
  */
 public class EmeraldLassoItem extends Item {
-
-    /**
-     * This constant represents the number of entities the lasso can store.
-     */
-    private static final int NUMBER_ALLOWED = 1;
 
     public EmeraldLassoItem(Properties pProperties) {
         super(pProperties);
@@ -89,10 +77,9 @@ public class EmeraldLassoItem extends Item {
 
         ItemStack heldItemStack = player.getItemInHand(hand);
 
-        ListTag entityList = getEntities(heldItemStack);
-
-        boolean requirementsMet = hand == InteractionHand.MAIN_HAND && isEntityValid(targetEntity)
-                && entityList.size() != NUMBER_ALLOWED;
+        boolean requirementsMet = hand == InteractionHand.MAIN_HAND
+                                  && isEntityValid(targetEntity)
+                                  && entityList.size() != EmeraldLassoCommonConfig.getNumAllowedEntities();
 
         if(requirementsMet) {
             if(!player.level.isClientSide()) {
@@ -173,11 +160,19 @@ public class EmeraldLassoItem extends Item {
      * @return {@code true} if the entity is valid {@code false} otherwise.
      */
     private boolean isEntityValid(Entity target) {
-        //Remove these cumbersome checks by adding a config file later
-        boolean mobCheck =  target instanceof Animal || target instanceof WaterAnimal ||
-                            target instanceof AbstractVillager || target instanceof NeutralMob;
+        List<EntityType<?>> entityWhitelist = EmeraldLassoCommonConfig.getEntityWhiteList();
 
-        return target.isAlive() && !target.isInWall() && mobCheck;
+        boolean whitelistCheck = false;
+
+        for(EntityType<?> type : entityWhitelist) {
+            if(target.getType().equals(type)) {
+                whitelistCheck = true;
+
+                break;
+            }
+        }
+
+        return target.isAlive() && !target.isInWall() && whitelistCheck;
     }
 
     /**
