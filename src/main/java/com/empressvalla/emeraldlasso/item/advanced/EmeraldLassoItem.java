@@ -125,7 +125,7 @@ public class EmeraldLassoItem extends Item {
 
         ListTag entityList = getEntities(heldItemStack);
 
-        if(entityList.isEmpty()) {
+        if(entityList.isEmpty() || hand != InteractionHand.MAIN_HAND) {
             return InteractionResult.FAIL;
         }
 
