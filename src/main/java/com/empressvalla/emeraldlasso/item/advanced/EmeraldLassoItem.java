@@ -15,6 +15,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -33,8 +34,8 @@ import java.util.List;
  */
 public class EmeraldLassoItem extends Item {
 
-    public EmeraldLassoItem(Properties pProperties) {
-        super(pProperties);
+    public EmeraldLassoItem(Properties properties) {
+        super(properties);
     }
 
     @Override
@@ -60,7 +61,6 @@ public class EmeraldLassoItem extends Item {
         ListTag entityList = getEntities(itemStack);
 
         if(!entityList.isEmpty()) {
-
             for (Tag currentEntityTag : entityList) {
                 tooltip.add(new TranslatableComponent("emeraldlasso.tooltips.entities",
                         EntityType.by((CompoundTag) currentEntityTag)
@@ -97,6 +97,7 @@ public class EmeraldLassoItem extends Item {
 
                 saveEntities(stack, entityList);
             }
+
             return true;
         }
 
@@ -146,6 +147,10 @@ public class EmeraldLassoItem extends Item {
         entityToLoad.setPos(position.getX() + 0.5, position.getY(), position.getZ() + 0.5);
 
         level.addFreshEntity(entityToLoad);
+
+        if(EmeraldLassoCommonConfig.hasDurability()) {
+            heldItemStack.hurtAndBreak(5, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+        }
 
         return InteractionResult.SUCCESS;
     }

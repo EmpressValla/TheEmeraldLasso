@@ -29,6 +29,12 @@ public class EmeraldLassoCommonConfig {
     private static final ForgeConfigSpec.ConfigValue<Integer> NUM_ENTITIES_ALLOWED;
 
     /**
+     * Responsible for storing the config value which controls whether
+     * the lasso has durability and can be broken.
+     */
+    private static final ForgeConfigSpec.ConfigValue<Boolean> HAS_DURABILITY;
+
+    /**
      * Responsible for storing the config value which controls which entities can be picked
      * up by the lasso.
      */
@@ -63,7 +69,11 @@ public class EmeraldLassoCommonConfig {
     static {
         BUILDER.push("Emerald Lasso Config");
 
-        NUM_ENTITIES_ALLOWED = BUILDER.comment("How many entities should the lasso store?").defineInRange("num_entities_allowed", 1, 1, 5);
+        NUM_ENTITIES_ALLOWED = BUILDER.comment("How many entities should the lasso store?")
+                                      .defineInRange("num_entities_allowed", 1, 1, 5);
+
+        HAS_DURABILITY = BUILDER.comment("Should the lasso have a durability? Set to true if you'd like it to take damage after use")
+                                .define("has_durability", false);
 
         //The validator checks that the input is a string and that it follows the expected resource pattern. I.E minecraft:pig
         Predicate<Object> entityWhitelistValidator =  s -> s instanceof String && ((String) s).matches("[a-z0-9]+:[a-z_]+");
@@ -112,10 +122,23 @@ public class EmeraldLassoCommonConfig {
      *
      * @see EmeraldLassoCommonConfig#NUM_ENTITIES_ALLOWED
      *
-     * @return The integer value retrieved from NUM_ENTITIES_ALLOWED
+     * @return The integer value retrieved from NUM_ENTITIES_ALLOWED.
      */
     public static int getNumAllowedEntities() {
         return NUM_ENTITIES_ALLOWED.get();
+    }
+
+    /**
+     * This method is responsible for returning the boolean
+     * which was provided in the HAS_DURABILITY
+     * config value.
+     *
+     * @see EmeraldLassoCommonConfig#HAS_DURABILITY
+     *
+     * @return The boolean value retrieved from HAS_DURABILITY.
+     */
+    public static boolean hasDurability() {
+        return HAS_DURABILITY.get();
     }
 
 }
