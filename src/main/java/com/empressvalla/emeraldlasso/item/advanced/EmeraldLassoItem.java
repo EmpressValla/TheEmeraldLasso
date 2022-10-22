@@ -75,7 +75,7 @@ public class EmeraldLassoItem extends Item {
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity targetEntity) {
         InteractionHand hand = player.getUsedItemHand();
 
-        ItemStack heldItemStack = player.getItemInHand(hand);
+        ListTag entityList = getEntities(stack);
 
         boolean requirementsMet = hand == InteractionHand.MAIN_HAND
                                   && isEntityValid(targetEntity)
@@ -95,7 +95,7 @@ public class EmeraldLassoItem extends Item {
 
                 targetEntity.remove(RemovalReason.DISCARDED);
 
-                saveEntities(heldItemStack, entityList);
+                saveEntities(stack, entityList);
             }
             return true;
         }
