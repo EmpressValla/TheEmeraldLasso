@@ -35,6 +35,12 @@ public class EmeraldLassoCommonConfig {
     private static final ForgeConfigSpec.ConfigValue<Boolean> HAS_DURABILITY;
 
     /**
+     * Responsible for storing the config value which controls what
+     * the durability of the lasso should be (if applicable).
+     */
+    private static final ForgeConfigSpec.ConfigValue<Integer> DURABILITY;
+
+    /**
      * Responsible for storing the config value which controls which entities can be picked
      * up by the lasso.
      */
@@ -74,6 +80,9 @@ public class EmeraldLassoCommonConfig {
 
         HAS_DURABILITY = BUILDER.comment("Should the lasso have a durability? Set to true if you'd like it to take damage after use")
                                 .define("has_durability", false);
+
+        DURABILITY = BUILDER.comment("Set the lasso's durability. Note that this will only work if HAS_DURABILITY is false")
+                            .defineInRange("durability", 250, 100, 600);
 
         //The validator checks that the input is a string and that it follows the expected resource pattern. I.E minecraft:pig
         Predicate<Object> entityWhitelistValidator =  s -> s instanceof String && ((String) s).matches("[a-z0-9]+:[a-z_]+");
@@ -139,6 +148,20 @@ public class EmeraldLassoCommonConfig {
      */
     public static boolean hasDurability() {
         return HAS_DURABILITY.get();
+    }
+
+    /**
+     * This method is responsible for returning the
+     * integer which was provided in the DURABILITY
+     * config value. If applicable, this will
+     * be the durability of the lasso.
+     *
+     * @see EmeraldLassoCommonConfig#DURABILITY
+     *
+     * @return The integer value retrieved from DURABILITY.
+     */
+    public static int getLassoDurability() {
+        return DURABILITY.get();
     }
 
 }
