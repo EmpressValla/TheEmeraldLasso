@@ -6,6 +6,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -44,7 +45,9 @@ public class EmeraldLassoCommonConfig {
      * Responsible for storing the config value which controls which entities can be picked
      * up by the lasso.
      */
-    private static final ForgeConfigSpec.ConfigValue<List<? extends String>> ENTITY_WHITELIST;
+    private static final ForgeConfigSpec.ConfigValue<List<? extends String>> VANILLA_ENTITY_WHITELIST;
+
+    private static final ForgeConfigSpec.ConfigValue<List<? extends String>> MOD_ENTITY_WHITELIST;
 
     private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
@@ -87,8 +90,11 @@ public class EmeraldLassoCommonConfig {
         //The validator checks that the input is a string and that it follows the expected resource pattern. I.E minecraft:pig
         Predicate<Object> entityWhitelistValidator =  s -> s instanceof String && ((String) s).matches("[a-z0-9]+:[a-z_]+");
 
-        ENTITY_WHITELIST = BUILDER.comment("Add the entities you want the lasso to pick up. Use the same pattern as the examples below.")
-                                  .defineList("entity_whitelist", DEFAULT_ENTITIES, entityWhitelistValidator);
+        VANILLA_ENTITY_WHITELIST = BUILDER.comment("Add the vanilla entities you want the lasso to pick up. Use the same pattern as the examples below.")
+                                          .defineList("vanilla_entity_whitelist", DEFAULT_ENTITIES, entityWhitelistValidator);
+
+        MOD_ENTITY_WHITELIST = BUILDER.comment("Same as above but for mod entities. You can put them in either, but this allows you to manage them better.")
+                                      .defineList("mod_entity_whitelist", Collections.emptyList(), entityWhitelistValidator);
 
         BUILDER.pop();
 
@@ -98,15 +104,17 @@ public class EmeraldLassoCommonConfig {
     /**
      * This method is responsible for building up a list
      * of EntityTypes from the resource tags that
-     * are provided in the ENTITY_WHITELIST config
-     * value.
+     * are provided in the VANILLA_ENTITY_WHITELIST and
+     * MOD_ENTITY_WHITELIST config values.
      *
-     * @see EmeraldLassoCommonConfig#ENTITY_WHITELIST
+     * @see EmeraldLassoCommonConfig#VANILLA_ENTITY_WHITELIST
      *
      * @return A list of the entity types extracted from the whitelist.
      */
     public static List<EntityType<?>> getEntityWhiteList() {
-        List<? extends String> whitelist = ENTITY_WHITELIST.get();
+        List<? extends String> whitelist = VANILLA_ENTITY_WHITELIST.get();
+
+        List<? extends String> modWhitelist = MOD_ENTITY_WHITELIST.get();
 
         List<EntityType<?>> allowedEntityTypes = new ArrayList<>();
 
@@ -116,6 +124,17 @@ public class EmeraldLassoCommonConfig {
             if(currentEntity.isEmpty()) {
                LOGGER.error("The entity could not be found with resource {}, please check you provided the correct tag. Skipping Entity", entityResourceTag);
                continue;
+            }
+
+            allowedEntityTypes.add(currentEntity.get());
+        }
+
+        for(String entityResourceTag : modWhitelist) {
+            Optional<EntityType<?>> currentEntity = EntityType.byString(entityResourceTag);
+
+            if(currentEntity.isEmpty()) {
+                LOGGER.error("The entity could not be found with resource {}, please check you provided the correct tag. Skipping Entity", entityResourceTag);
+                continue;
             }
 
             allowedEntityTypes.add(currentEntity.get());
