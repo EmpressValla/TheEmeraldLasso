@@ -78,8 +78,8 @@ public class EmeraldLassoCommonConfig {
         NUM_ENTITIES_ALLOWED = BUILDER.comment("How many entities should the lasso store?")
                                       .defineInRange("num_entities_allowed", 1, 1, 5);
 
-        HAS_DURABILITY = BUILDER.comment("Should the lasso have a durability? Set to true if you'd like it to take damage after use")
-                                .define("has_durability", false);
+        HAS_DURABILITY = BUILDER.comment("Should the lasso have a durability? Set to false if you'd like it to take no damage")
+                                .define("has_durability", true);
 
         DURABILITY = BUILDER.comment("Set the lasso's durability. Note that this will only work if HAS_DURABILITY is true")
                             .defineInRange("durability", 250, 100, 600);
