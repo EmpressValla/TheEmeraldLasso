@@ -1,6 +1,7 @@
 package com.empressvalla.emeraldlasso.item.advanced;
 
 import com.empressvalla.emeraldlasso.config.EmeraldLassoCommonConfig;
+import com.empressvalla.emeraldlasso.item.ModCreativeModeTab;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -35,7 +36,9 @@ import java.util.List;
 public class EmeraldLassoItem extends Item {
 
     public EmeraldLassoItem(Properties properties) {
-        super(properties);
+        super(properties.tab(ModCreativeModeTab.EMERALD_LASSO_TAB)
+                        .stacksTo(1)
+                        .durability(EmeraldLassoCommonConfig.getLassoDurability()));
     }
 
     @Override
