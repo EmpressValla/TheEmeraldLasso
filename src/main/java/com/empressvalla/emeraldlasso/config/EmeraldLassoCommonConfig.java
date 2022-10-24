@@ -81,7 +81,7 @@ public class EmeraldLassoCommonConfig {
         HAS_DURABILITY = BUILDER.comment("Should the lasso have a durability? Set to true if you'd like it to take damage after use")
                                 .define("has_durability", false);
 
-        DURABILITY = BUILDER.comment("Set the lasso's durability. Note that this will only work if HAS_DURABILITY is false")
+        DURABILITY = BUILDER.comment("Set the lasso's durability. Note that this will only work if HAS_DURABILITY is true")
                             .defineInRange("durability", 250, 100, 600);
 
         //The validator checks that the input is a string and that it follows the expected resource pattern. I.E minecraft:pig
