@@ -11,6 +11,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -86,7 +88,9 @@ public class EmeraldLassoItem extends Item {
                                   && entityList.size() != EmeraldLassoCommonConfig.getNumAllowedEntities();
 
         if(requirementsMet) {
-            if(!player.level.isClientSide()) {
+            Level level = player.getLevel();
+
+            if(!level.isClientSide()) {
                 targetEntity.stopRiding();
 
                 targetEntity.ejectPassengers();
@@ -100,6 +104,10 @@ public class EmeraldLassoItem extends Item {
                 targetEntity.remove(RemovalReason.DISCARDED);
 
                 saveEntities(stack, entityList);
+
+                BlockPos position = player.getOnPos();
+
+                level.playSound(null, position, SoundEvents.ENDERMAN_TELEPORT, SoundSource.AMBIENT, 0.5f, 1f);
             }
 
             return true;
@@ -155,6 +163,8 @@ public class EmeraldLassoItem extends Item {
         if(EmeraldLassoCommonConfig.hasDurability()) {
             heldItemStack.hurtAndBreak(5, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
         }
+
+        level.playSound(null, position, SoundEvents.CHICKEN_EGG, SoundSource.BLOCKS, 0.5f, 1f);
 
         return InteractionResult.SUCCESS;
     }
