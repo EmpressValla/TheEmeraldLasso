@@ -40,9 +40,10 @@ public class EmeraldLassoItem extends Item {
 
     public EmeraldLassoItem(Properties properties) {
         super(properties.tab(ModCreativeModeTab.EMERALD_LASSO_TAB)
-                        .stacksTo(1)
-                        .durability(EmeraldLassoCommonConfig.getLassoDurability()));
+                .stacksTo(1)
+                .durability(250));
     }
+
 
     @Override
     public boolean doesSneakBypassUse(ItemStack stack, LevelReader level, BlockPos pos, Player player) {
