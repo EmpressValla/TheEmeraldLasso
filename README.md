@@ -15,11 +15,10 @@ pick and choose what I could pick up, depending on what I'm playing. You'll find
 
 1. num_entities_allowed - Lets you control how many entities the lasso can store. You can toggle this to between 1 and 5. 1 is the default
 2. has_durability - Lets you control whether the lasso should have a durability or not. This is set to true by default.
-3. durability - Lets you decide what the durability of the lasso should be. Default is 250 and you can toggle this between 100 and 600. 250 is the default.
-4. vanilla_entity_whitelist - Lets you control what entities the lasso is able to pick up. Note this must have at least one value. By default most of the animals
+3. vanilla_entity_whitelist - Lets you control what entities the lasso is able to pick up. Note this must have at least one value. By default most of the animals
 and regular villagers are allowed. To add to this, you should follow the pattern of using the resource location. Which is usually id:name. For example if you want to
 add the wandering trader, you would add "minecraft:wandering_trader" to the list. 
-5. mod_entity_whitelist - The same as above, but for entities added by mods. You can actually put these in either but I made this so that you can keep them separate. You should follow
+4. mod_entity_whitelist - The same as above, but for entities added by mods. You can actually put these in either but I made this so that you can keep them separate. You should follow
 the same pattern as above. If you're unsure about a mods id. The quickest way to find it is to use the /give command in game. If you search for an item in the mod, it
 will display what the id is. I.E /give EmpressValla itemname
 
@@ -38,10 +37,6 @@ to contact me on my discord (shown in the social section) and if I accept it I'l
 I am totally fine with people submitting a pull request on here for an improvement or otherwise. Just like for offering help if you are going to submit a PR
 please be as detailed as possible so I know what's going on. It would be even better if you shoot me a friend request on discord, so that I can chat more 
 readily about. Of course give me time to look through things. I'm not a wizard..yet anyway.
-
-## 1.19.2 Version??
-I started making this in 1.18.2 and decided to finish it on this version first for anyone still playing 1.18. But I will be working on porting to 1.19.2 as soon as
-possible.
 
 ## Socials
 - Discord: EmpressValla#2365
