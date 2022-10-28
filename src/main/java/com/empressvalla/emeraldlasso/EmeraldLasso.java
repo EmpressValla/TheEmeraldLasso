@@ -1,6 +1,6 @@
 package com.empressvalla.emeraldlasso;
 
-import com.empressvalla.emeraldlasso.config.EmeraldLassoCommonConfig;
+import com.empressvalla.emeraldlasso.config.ConfigManager;
 import com.empressvalla.emeraldlasso.item.ModItems;
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.common.MinecraftForge;
@@ -40,7 +40,7 @@ public class EmeraldLasso
 
         ModItems.register(eventBus);
 
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, EmeraldLassoCommonConfig.SPEC_COMMON, "emeraldlasso-common.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigManager.SPEC_COMMON, "emeraldlasso-common.toml");
 
         eventBus.addListener(this::setup);
 
