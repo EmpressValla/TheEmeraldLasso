@@ -1,6 +1,6 @@
 package com.empressvalla.emeraldlasso.item.advanced;
 
-import com.empressvalla.emeraldlasso.config.EmeraldLassoCommonConfig;
+import com.empressvalla.emeraldlasso.config.ConfigManager;
 import com.empressvalla.emeraldlasso.item.ModCreativeModeTab;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -8,9 +8,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.contents.LiteralContents;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -61,22 +62,25 @@ public class EmeraldLassoItem extends Item {
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(itemStack, level, tooltip, flag);
 
-        tooltip.add(new TranslatableComponent("emeraldlasso.tooltips.pickup").setStyle(Style.EMPTY.applyFormat(ChatFormatting.YELLOW)));
+        tooltip.add(MutableComponent.create(new TranslatableContents("emeraldlasso.tooltips.pickup"))
+                                    .setStyle(Style.EMPTY.applyFormat(ChatFormatting.YELLOW)));
 
-        tooltip.add(new TranslatableComponent("emeraldlasso.tooltips.release").setStyle(Style.EMPTY.applyFormat(ChatFormatting.YELLOW)));
+        tooltip.add(MutableComponent.create(new TranslatableContents("emeraldlasso.tooltips.release"))
+                                    .setStyle(Style.EMPTY.applyFormat(ChatFormatting.YELLOW)));
 
         ListTag entityList = getEntities(itemStack);
 
         if(!entityList.isEmpty()) {
             for (Tag currentEntityTag : entityList) {
-                tooltip.add(new TranslatableComponent("emeraldlasso.tooltips.entities",
+                tooltip.add(MutableComponent.create(new TranslatableContents("emeraldlasso.tooltips.entities",
                         EntityType.by((CompoundTag) currentEntityTag)
                                   .map(EntityType::getDescription)
-                                  .orElse(new TextComponent("Unknown Entity")))
+                                  .orElse(MutableComponent.create(new LiteralContents("Unknown Entity")))))
                                   .setStyle(Style.EMPTY.applyFormat(ChatFormatting.LIGHT_PURPLE)));
             }
         }
     }
+
 
     @Override
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity targetEntity) {
@@ -86,7 +90,7 @@ public class EmeraldLassoItem extends Item {
 
         boolean requirementsMet = hand == InteractionHand.MAIN_HAND
                                   && isEntityValid(targetEntity)
-                                  && entityList.size() != EmeraldLassoCommonConfig.getNumAllowedEntities();
+                                  && entityList.size() != ConfigManager.getNumAllowedEntities();
 
         if(requirementsMet) {
             Level level = player.getLevel();
@@ -161,7 +165,7 @@ public class EmeraldLassoItem extends Item {
 
         level.addFreshEntity(entityToLoad);
 
-        if(EmeraldLassoCommonConfig.hasDurability()) {
+        if(ConfigManager.hasDurability()) {
             heldItemStack.hurtAndBreak(5, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
         }
 
@@ -180,7 +184,7 @@ public class EmeraldLassoItem extends Item {
      * @return {@code true} if the entity is valid {@code false} otherwise.
      */
     private boolean isEntityValid(Entity target) {
-        List<EntityType<?>> entityWhitelist = EmeraldLassoCommonConfig.getEntityWhiteList();
+        List<EntityType<?>> entityWhitelist = ConfigManager.getEntityWhiteList();
 
         boolean whitelistCheck = false;
 
