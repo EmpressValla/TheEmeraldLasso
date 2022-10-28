@@ -13,10 +13,10 @@ import java.util.function.Predicate;
 
 /**
  * This class is responsible for providing
- * access to the common config values as
+ * access to the config values as
  * well as building the config file itself.
  */
-public class EmeraldLassoCommonConfig {
+public class ConfigManager {
 
     /**
      * Responsible for storing the spec for the common config. Used for registering config.
@@ -34,12 +34,6 @@ public class EmeraldLassoCommonConfig {
      * the lasso has durability and can be broken.
      */
     private static final ForgeConfigSpec.ConfigValue<Boolean> HAS_DURABILITY;
-
-    /**
-     * Responsible for storing the config value which controls what
-     * the durability of the lasso should be (if applicable).
-     */
-    private static final ForgeConfigSpec.ConfigValue<Integer> DURABILITY;
 
     /**
      * Responsible for storing the config value which controls which entities can be picked
@@ -78,14 +72,12 @@ public class EmeraldLassoCommonConfig {
     static {
         BUILDER.push("Emerald Lasso Config");
 
+
         NUM_ENTITIES_ALLOWED = BUILDER.comment("How many entities should the lasso store?")
                                       .defineInRange("num_entities_allowed", 1, 1, 5);
 
         HAS_DURABILITY = BUILDER.comment("Should the lasso have a durability? Set to false if you'd like it to take no damage")
                                 .define("has_durability", true);
-
-        DURABILITY = BUILDER.comment("Set the lasso's durability. Note that this will only work if HAS_DURABILITY is true")
-                            .defineInRange("durability", 250, 100, 600);
 
         //The validator checks that the input is a string and that it follows the expected resource pattern. I.E minecraft:pig
         Predicate<Object> entityWhitelistValidator =  s -> s instanceof String && ((String) s).matches("[a-z0-9]+:[a-z_]+");
@@ -107,7 +99,7 @@ public class EmeraldLassoCommonConfig {
      * are provided in the VANILLA_ENTITY_WHITELIST and
      * MOD_ENTITY_WHITELIST config values.
      *
-     * @see EmeraldLassoCommonConfig#VANILLA_ENTITY_WHITELIST
+     * @see ConfigManager#VANILLA_ENTITY_WHITELIST
      *
      * @return A list of the entity types extracted from the whitelist.
      */
@@ -148,7 +140,7 @@ public class EmeraldLassoCommonConfig {
      * which was provided in the NUM_ENTITIES_ALLOWED
      * config value.
      *
-     * @see EmeraldLassoCommonConfig#NUM_ENTITIES_ALLOWED
+     * @see ConfigManager#NUM_ENTITIES_ALLOWED
      *
      * @return The integer value retrieved from NUM_ENTITIES_ALLOWED.
      */
@@ -161,26 +153,12 @@ public class EmeraldLassoCommonConfig {
      * which was provided in the HAS_DURABILITY
      * config value.
      *
-     * @see EmeraldLassoCommonConfig#HAS_DURABILITY
+     * @see ConfigManager#HAS_DURABILITY
      *
      * @return The boolean value retrieved from HAS_DURABILITY.
      */
     public static boolean hasDurability() {
         return HAS_DURABILITY.get();
-    }
-
-    /**
-     * This method is responsible for returning the
-     * integer which was provided in the DURABILITY
-     * config value. If applicable, this will
-     * be the durability of the lasso.
-     *
-     * @see EmeraldLassoCommonConfig#DURABILITY
-     *
-     * @return The integer value retrieved from DURABILITY.
-     */
-    public static int getLassoDurability() {
-        return DURABILITY.get();
     }
 
 }
