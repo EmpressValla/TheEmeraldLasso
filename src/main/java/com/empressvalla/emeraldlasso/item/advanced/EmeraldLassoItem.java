@@ -1,6 +1,6 @@
 package com.empressvalla.emeraldlasso.item.advanced;
 
-import com.empressvalla.emeraldlasso.config.EmeraldLassoCommonConfig;
+import com.empressvalla.emeraldlasso.config.ConfigManager;
 import com.empressvalla.emeraldlasso.item.ModCreativeModeTab;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -41,7 +41,7 @@ public class EmeraldLassoItem extends Item {
     public EmeraldLassoItem(Properties properties) {
         super(properties.tab(ModCreativeModeTab.EMERALD_LASSO_TAB)
                         .stacksTo(1)
-                        .durability(EmeraldLassoCommonConfig.getLassoDurability()));
+                        .durability(250));
     }
 
     @Override
@@ -85,7 +85,7 @@ public class EmeraldLassoItem extends Item {
 
         boolean requirementsMet = hand == InteractionHand.MAIN_HAND
                                   && isEntityValid(targetEntity)
-                                  && entityList.size() != EmeraldLassoCommonConfig.getNumAllowedEntities();
+                                  && entityList.size() != ConfigManager.getNumAllowedEntities();
 
         if(requirementsMet) {
             Level level = player.getLevel();
@@ -160,7 +160,7 @@ public class EmeraldLassoItem extends Item {
 
         level.addFreshEntity(entityToLoad);
 
-        if(EmeraldLassoCommonConfig.hasDurability()) {
+        if(ConfigManager.hasDurability()) {
             heldItemStack.hurtAndBreak(5, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
         }
 
@@ -179,7 +179,7 @@ public class EmeraldLassoItem extends Item {
      * @return {@code true} if the entity is valid {@code false} otherwise.
      */
     private boolean isEntityValid(Entity target) {
-        List<EntityType<?>> entityWhitelist = EmeraldLassoCommonConfig.getEntityWhiteList();
+        List<EntityType<?>> entityWhitelist = ConfigManager.getEntityWhiteList();
 
         boolean whitelistCheck = false;
 
