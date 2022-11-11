@@ -29,6 +29,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,6 +38,15 @@ import java.util.List;
  *
  */
 public class EmeraldLassoItem extends Item {
+
+    /**
+     * This list holds the whitelist of entity types which are allowed in the lasso.
+     * This will start off empty but be populated from the config file the first
+     * time an entity is interacted with.
+     *
+     * @see ConfigManager#getEntityWhiteList() For more details.
+     */
+    private static List<EntityType<?>> entityWhitelist = new ArrayList<>();
 
     public EmeraldLassoItem(Properties properties) {
         super(properties.tab(ModCreativeModeTab.EMERALD_LASSO_TAB)
@@ -179,7 +189,9 @@ public class EmeraldLassoItem extends Item {
      * @return {@code true} if the entity is valid {@code false} otherwise.
      */
     private boolean isEntityValid(Entity target) {
-        List<EntityType<?>> entityWhitelist = ConfigManager.getEntityWhiteList();
+        if(entityWhitelist.isEmpty()) {
+            entityWhitelist = ConfigManager.getEntityWhiteList();
+        }
 
         boolean whitelistCheck = false;
 
