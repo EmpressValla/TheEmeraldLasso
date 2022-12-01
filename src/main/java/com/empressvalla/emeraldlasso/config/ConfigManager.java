@@ -36,6 +36,12 @@ public class ConfigManager {
     private static final ForgeConfigSpec.ConfigValue<Boolean> HAS_DURABILITY;
 
     /**
+     * Responsible for storing the config value which controls whether
+     * the lasso can store all entities.
+     */
+    private static final ForgeConfigSpec.ConfigValue<Boolean> ALLOW_ALL_ENTITIES;
+
+    /**
      * Responsible for storing the config value which controls which entities can be picked
      * up by the lasso.
      */
@@ -78,6 +84,9 @@ public class ConfigManager {
 
         HAS_DURABILITY = BUILDER.comment("Should the lasso have a durability? Set to false if you'd like it to take no damage")
                                 .define("has_durability", true);
+
+        ALLOW_ALL_ENTITIES = BUILDER.comment("Do you want the lasso to pick up all entity types? Note this will bypass whatever is in the whitelists")
+                                    .define("allow_all_entities", false);
 
         //The validator checks that the input is a string and that it follows the expected resource pattern. I.E minecraft:pig
         Predicate<Object> entityWhitelistValidator =  s -> s instanceof String && ((String) s).matches("[a-z0-9]+:[a-z_]+");
@@ -159,6 +168,19 @@ public class ConfigManager {
      */
     public static boolean hasDurability() {
         return HAS_DURABILITY.get();
+    }
+
+    /**
+     * This method is responsible for returning the boolean
+     * which was provided in the ALLOW_ALL_ENTITIES
+     * config value.
+     *
+     * @see ConfigManager#ALLOW_ALL_ENTITIES
+     *
+     * @return The boolean value retrieved from ALLOW_ALL_ENTITIES.
+     */
+    public static boolean allEntitiesAllowed() {
+        return ALLOW_ALL_ENTITIES.get();
     }
 
 }
