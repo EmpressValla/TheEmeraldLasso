@@ -193,11 +193,17 @@ public class EmeraldLassoItem extends Item {
      * @return {@code true} if the entity is valid {@code false} otherwise.
      */
     private boolean isEntityValid(Entity target) {
-        if(entityWhitelist.isEmpty()) {
-            entityWhitelist = ConfigManager.getEntityWhiteList();
+        boolean baseCheck = target instanceof LivingEntity && target.isAlive() && !target.isInWall();
+
+        if(ConfigManager.allEntitiesAllowed()) {
+            return baseCheck;
         }
 
         boolean whitelistCheck = false;
+
+        if(entityWhitelist.isEmpty()) {
+            entityWhitelist = ConfigManager.getEntityWhiteList();
+        }
 
         for(EntityType<?> type : entityWhitelist) {
             if(target.getType().equals(type)) {
@@ -207,7 +213,7 @@ public class EmeraldLassoItem extends Item {
             }
         }
 
-        return target instanceof LivingEntity && target.isAlive() && !target.isInWall() && whitelistCheck;
+        return baseCheck && whitelistCheck;
     }
 
     /**
