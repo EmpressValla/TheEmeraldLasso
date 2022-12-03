@@ -101,6 +101,17 @@ public class EmeraldLassoItem extends Item {
                                   && isEntityValid(targetEntity)
                                   && entityList.size() != ConfigManager.getNumAllowedEntities();
 
+        if(ConfigManager.entityHealthSystemEnabled()) {
+            // Reminder: We already checked if the target is of type LivingEntity in isEntityValid, so we can safely cast it.
+            LivingEntity livingEntityTarget = (LivingEntity) targetEntity;
+
+            float health = livingEntityTarget.getHealth();
+
+            double minEntityHealth = ConfigManager.getMinEntityHealth();
+
+            requirementsMet = requirementsMet && health <= minEntityHealth;
+        }
+
         if(requirementsMet) {
             Level level = player.getLevel();
 
