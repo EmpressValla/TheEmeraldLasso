@@ -42,6 +42,24 @@ public class ConfigManager {
     private static final ForgeConfigSpec.ConfigValue<Boolean> ALLOW_ALL_ENTITIES;
 
     /**
+     * Responsible for storing the config value which controls whether
+     * the lasso will use the entity health system. I.E the entity will
+     * need to be lowered to a certain heart threshold before it can be
+     * stored.
+     */
+    private static final ForgeConfigSpec.ConfigValue<Boolean> ENTITY_HEALTH_SYSTEM;
+
+    /**
+     * Responsible for storing the config value which controls the
+     * minimum health threshold for an entity to be stored.
+     *
+     * This will only be used if the ENTITY_HEALTH_SYSTEM is set to true.
+     *
+     * @see ConfigManager#ENTITY_HEALTH_SYSTEM
+     */
+    private static final ForgeConfigSpec.ConfigValue<Double> MIN_ENTITY_HEALTH;
+
+    /**
      * Responsible for storing the config value which controls which entities can be picked
      * up by the lasso.
      */
@@ -87,6 +105,12 @@ public class ConfigManager {
 
         ALLOW_ALL_ENTITIES = BUILDER.comment("Do you want the lasso to pick up all entity types? Note this will bypass whatever is in the whitelists")
                                     .define("allow_all_entities", false);
+
+        ENTITY_HEALTH_SYSTEM = BUILDER.comment("Do you want the lasso to use the entity health system? I.E An entity must be lowered to a certain heart threshold to be stored in the lasso")
+                .define("entity_health_system", false);
+
+        MIN_ENTITY_HEALTH = BUILDER.comment("What should the minimum health threshold be for an entity to be stored in the lasso?")
+                .defineInRange("min_entity_health", 1.5, 1.0, 500.0);
 
         //The validator checks that the input is a string and that it follows the expected resource pattern. I.E minecraft:pig
         Predicate<Object> entityWhitelistValidator =  s -> s instanceof String && ((String) s).matches("[a-z0-9]+:[a-z_]+");
@@ -158,6 +182,22 @@ public class ConfigManager {
     }
 
     /**
+     * This method is responsible for returning the number
+     * which was provided in the MIN_ENTITY_HEALTH
+     * config value.
+     *
+     * This will only be used if the ENTITY_HEALTH_SYSTEM is set to true.
+     *
+     * @see ConfigManager#NUM_ENTITIES_ALLOWED
+     * @see ConfigManager#ENTITY_HEALTH_SYSTEM
+     *
+     * @return The integer value retrieved from NUM_ENTITIES_ALLOWED.
+     */
+    public static Double getMinEntityHealth() {
+        return MIN_ENTITY_HEALTH.get();
+    }
+
+    /**
      * This method is responsible for returning the boolean
      * which was provided in the HAS_DURABILITY
      * config value.
@@ -181,6 +221,19 @@ public class ConfigManager {
      */
     public static boolean allEntitiesAllowed() {
         return ALLOW_ALL_ENTITIES.get();
+    }
+
+    /**
+     * This method is responsible for returning the boolean
+     * which was provided in the ENTITY_HEALTH_SYSTEM
+     * config value.
+     *
+     * @see ConfigManager#ENTITY_HEALTH_SYSTEM
+     *
+     * @return The boolean value retrieved from ENTITY_HEALTH_SYSTEM.
+     */
+    public static boolean entityHealthSystemEnabled() {
+        return ENTITY_HEALTH_SYSTEM.get();
     }
 
 }
