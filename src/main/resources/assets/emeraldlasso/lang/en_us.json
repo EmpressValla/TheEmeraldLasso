@@ -7,5 +7,7 @@
 
   "emeraldlasso.tooltips.release": "Right click on a block to release a stored entity",
 
-  "emeraldlasso.tooltips.entities": "Entity: %s"
+  "emeraldlasso.tooltips.entities": "Entity: %s",
+
+  "emeraldlasso.messages.entity_health_high": "The entity's health %s is too high to be stored, please lower to %s or less"
 }
