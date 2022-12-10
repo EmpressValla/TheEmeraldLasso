@@ -97,6 +97,8 @@ public class EmeraldLassoItem extends Item {
                                   && isEntityValid(targetEntity)
                                   && entityList.size() != ConfigManager.getNumAllowedEntities();
 
+        Level level = player.getLevel();
+
         if(ConfigManager.entityHealthSystemEnabled()) {
             // Reminder: We already checked if the target is of type LivingEntity in isEntityValid, so we can safely cast it.
             LivingEntity livingEntityTarget = (LivingEntity) targetEntity;
@@ -106,10 +108,14 @@ public class EmeraldLassoItem extends Item {
             double minEntityHealth = ConfigManager.getMinEntityHealth();
 
             requirementsMet = requirementsMet && health <= minEntityHealth;
+
+            if(health >= minEntityHealth && !level.isClientSide()) {
+                player.sendMessage(new TranslatableComponent("emeraldlasso.messages.entity_health_high", health, minEntityHealth)
+                        .setStyle(Style.EMPTY.applyFormat(ChatFormatting.RED)), player.getUUID());
+            }
         }
 
         if(requirementsMet) {
-            Level level = player.getLevel();
 
             if(!level.isClientSide()) {
                 targetEntity.stopRiding();
