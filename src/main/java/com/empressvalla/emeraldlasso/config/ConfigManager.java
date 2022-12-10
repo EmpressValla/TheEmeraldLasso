@@ -104,7 +104,7 @@ public class ConfigManager {
 
 
         ALLOW_ALL_ENTITIES = BUILDER.comment("Do you want the lasso to pick up all entity types? Note this will bypass whatever is in the whitelists")
-                                    .define("allow_all_entities", false);
+                                    .define("allow_all_entities", true);
 
         ENTITY_HEALTH_SYSTEM = BUILDER.comment("Do you want the lasso to use the entity health system? I.E An entity must be lowered to a certain heart threshold to be stored in the lasso")
                 .define("entity_health_system", false);
