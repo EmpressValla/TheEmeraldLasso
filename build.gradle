@@ -19,7 +19,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
 
-version = '1.0.3-1.19.2'
+version = '1.1.0-1.19.2'
 group = 'com.empressvalla.emeraldlasso' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'emeraldlasso'
 
