@@ -205,7 +205,7 @@ public class EmeraldLassoItem extends Item {
      *
      * @return {@code true} if the entity is valid {@code false} otherwise.
      */
-    private boolean isEntityValid(Entity target) {
+    private static boolean isEntityValid(Entity target) {
         boolean baseCheck = target instanceof LivingEntity && target.isAlive() && !target.isInWall();
 
         if(ConfigManager.allEntitiesAllowed()) {
@@ -239,7 +239,7 @@ public class EmeraldLassoItem extends Item {
      *
      * @return The list of entities stored in the item stack.
      */
-    private ListTag getEntities(ItemStack itemStack) {
+    private static ListTag getEntities(ItemStack itemStack) {
         CompoundTag stackTag = itemStack.getOrCreateTag();
 
         if(stackTag.contains(NBTIdentifiers.ENTITIES, CompoundTag.TAG_LIST)) {
@@ -261,7 +261,7 @@ public class EmeraldLassoItem extends Item {
      *
      * @param entityList The entity list to be saved to the item stack.
      */
-    private void saveEntities(ItemStack itemStack, ListTag entityList) {
+    private static void saveEntities(ItemStack itemStack, ListTag entityList) {
         CompoundTag stackTag = itemStack.getOrCreateTag();
 
         stackTag.put(NBTIdentifiers.ENTITIES, entityList);
