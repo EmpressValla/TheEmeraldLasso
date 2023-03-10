@@ -74,26 +74,11 @@ public class ConfigManager {
     /**
      * The default list of entities that will be added to the config file when first generated.
      */
-    private static final List<String> DEFAULT_ENTITIES = new ArrayList<>() {
-        {
-            add("minecraft:pig");
-            add("minecraft:bee");
-            add("minecraft:sheep");
-            add("minecraft:cow");
-            add("minecraft:wolf");
-            add("minecraft:cat");
-            add("minecraft:ocelot");
-            add("minecraft:chicken");
-            add("minecraft:villager");
-            add("minecraft:cod");
-            add("minecraft:dolphin");
-            add("minecraft:rabbit");
-            add("minecraft:polar_bear");
-            add("minecraft:squid");
-        }
-    };
+    private static final List<String> DEFAULT_ENTITIES = new ArrayList<>();
 
     static {
+        addDefaultEntities();
+
         BUILDER.push("Emerald Lasso Config");
 
         NUM_ENTITIES_ALLOWED = BUILDER.comment("How many entities should the lasso store?")
@@ -233,6 +218,23 @@ public class ConfigManager {
      */
     public static boolean entityHealthSystemEnabled() {
         return ENTITY_HEALTH_SYSTEM.get();
+    }
+
+    private static void addDefaultEntities() {
+        DEFAULT_ENTITIES.add("minecraft:pig");
+        DEFAULT_ENTITIES.add("minecraft:bee");
+        DEFAULT_ENTITIES.add("minecraft:sheep");
+        DEFAULT_ENTITIES.add("minecraft:cow");
+        DEFAULT_ENTITIES.add("minecraft:wolf");
+        DEFAULT_ENTITIES.add("minecraft:cat");
+        DEFAULT_ENTITIES.add("minecraft:ocelot");
+        DEFAULT_ENTITIES.add("minecraft:chicken");
+        DEFAULT_ENTITIES.add("minecraft:villager");
+        DEFAULT_ENTITIES.add("minecraft:cod");
+        DEFAULT_ENTITIES.add("minecraft:dolphin");
+        DEFAULT_ENTITIES.add("minecraft:rabbit");
+        DEFAULT_ENTITIES.add("minecraft:polar_bear");
+        DEFAULT_ENTITIES.add("minecraft:squid");
     }
 
 }
