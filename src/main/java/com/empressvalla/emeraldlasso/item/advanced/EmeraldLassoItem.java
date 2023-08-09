@@ -9,8 +9,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.contents.LiteralContents;
-import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -31,6 +29,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * This class is responsible for providing all functionality related to the Emerald Lasso custom
@@ -70,21 +69,25 @@ public class EmeraldLassoItem extends Item {
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(itemStack, level, tooltip, flag);
 
-        tooltip.add(MutableComponent.create(new TranslatableContents("emeraldlasso.tooltips.pickup"))
-                                    .setStyle(Style.EMPTY.applyFormat(ChatFormatting.YELLOW)));
+        tooltip.add(Component.translatable("emeraldlasso.tooltips.pickup")
+                             .withStyle(Style.EMPTY.applyFormat(ChatFormatting.YELLOW)));
 
-        tooltip.add(MutableComponent.create(new TranslatableContents("emeraldlasso.tooltips.release"))
-                                    .setStyle(Style.EMPTY.applyFormat(ChatFormatting.YELLOW)));
+        tooltip.add(Component.translatable("emeraldlasso.tooltips.release")
+                            .withStyle(Style.EMPTY.applyFormat(ChatFormatting.YELLOW)));
 
         ListTag entityList = getEntities(itemStack);
 
         if(!entityList.isEmpty()) {
             for (Tag currentEntityTag : entityList) {
-                tooltip.add(MutableComponent.create(new TranslatableContents("emeraldlasso.tooltips.entities",
-                        EntityType.by((CompoundTag) currentEntityTag)
-                                  .map(EntityType::getDescription)
-                                  .orElse(MutableComponent.create(new LiteralContents("Unknown Entity")))))
-                                  .setStyle(Style.EMPTY.applyFormat(ChatFormatting.LIGHT_PURPLE)));
+                Optional<EntityType<?>> entityType = EntityType.by((CompoundTag) currentEntityTag);
+
+                Component entityDescription = entityType.map(EntityType::getDescription)
+                                                        .orElse(Component.literal("Unknown Entity"));
+
+                MutableComponent tooltipComponent = Component.translatable("emeraldlasso.tooltips.entities", entityDescription)
+                                                             .withStyle(Style.EMPTY.applyFormat(ChatFormatting.LIGHT_PURPLE));
+
+                tooltip.add(tooltipComponent);
             }
         }
     }
