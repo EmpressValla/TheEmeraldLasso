@@ -117,8 +117,8 @@ public class EmeraldLassoItem extends Item {
 
             if(health > minEntityHealth && !level.isClientSide()){
                 player.sendSystemMessage(
-                         MutableComponent.create(new TranslatableContents("emeraldlasso.messages.entity_health_high", health, minEntityHealth))
-                                         .setStyle(Style.EMPTY.applyFormat(ChatFormatting.RED)));
+                         Component.translatable("emeraldlasso.messages.entity_health_high", health, minEntityHealth)
+                                  .withStyle(Style.EMPTY.applyFormat(ChatFormatting.RED)));
             }
         }
 
