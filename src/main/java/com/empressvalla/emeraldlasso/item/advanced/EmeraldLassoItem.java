@@ -1,6 +1,7 @@
 package com.empressvalla.emeraldlasso.item.advanced;
 
 import com.empressvalla.emeraldlasso.config.ConfigManager;
+import com.mojang.logging.LogUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -26,7 +27,9 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +49,11 @@ public class EmeraldLassoItem extends Item {
      * @see ConfigManager#getEntityWhiteList() For more details.
      */
     private static List<EntityType<?>> entityWhitelist = new ArrayList<>();
+
+    /**
+     * Responsible for storing the logger that will be used.
+     */
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     public EmeraldLassoItem(Properties properties) {
         super(properties
@@ -103,48 +111,54 @@ public class EmeraldLassoItem extends Item {
                                   && isEntityValid(targetEntity)
                                   && entityList.size() != ConfigManager.getNumAllowedEntities();
 
-        Level level = player.getLevel();
+        try (Level level = player.level()) {
 
-        if(ConfigManager.entityHealthSystemEnabled()) {
-            // Reminder: We already checked if the target is of type LivingEntity in isEntityValid, so we can safely cast it.
-            LivingEntity livingEntityTarget = (LivingEntity) targetEntity;
+            if (ConfigManager.entityHealthSystemEnabled()) {
+                // Reminder: We already checked if the target is of type LivingEntity in isEntityValid, so we can safely cast it.
+                LivingEntity livingEntityTarget = (LivingEntity) targetEntity;
 
-            float health = livingEntityTarget.getHealth();
+                float health = livingEntityTarget.getHealth();
 
-            double minEntityHealth = ConfigManager.getMinEntityHealth();
+                double minEntityHealth = ConfigManager.getMinEntityHealth();
 
-            requirementsMet = requirementsMet && health <= minEntityHealth;
+                requirementsMet = requirementsMet && health <= minEntityHealth;
 
-            if(health > minEntityHealth && !level.isClientSide()){
-                player.sendSystemMessage(
-                         Component.translatable("emeraldlasso.messages.entity_health_high", health, minEntityHealth)
-                                  .withStyle(Style.EMPTY.applyFormat(ChatFormatting.RED)));
+                if (health > minEntityHealth && !level.isClientSide()) {
+                    player.sendSystemMessage(
+                            Component.translatable("emeraldlasso.messages.entity_health_high", health, minEntityHealth)
+                                    .withStyle(Style.EMPTY.applyFormat(ChatFormatting.RED)));
+                }
+            }
+
+            if (requirementsMet) {
+
+                if (!level.isClientSide()) {
+                    targetEntity.stopRiding();
+
+                    targetEntity.ejectPassengers();
+
+                    CompoundTag entityTag = new CompoundTag();
+
+                    targetEntity.save(entityTag);
+
+                    entityList.add(entityTag);
+
+                    targetEntity.remove(RemovalReason.DISCARDED);
+
+                    saveEntities(stack, entityList);
+
+                    BlockPos position = player.getOnPos();
+
+                    level.playSound(null, position, SoundEvents.ENDERMAN_TELEPORT, SoundSource.AMBIENT, 0.5f, 1f);
+                }
+
+                return true;
             }
         }
+        catch (IOException e) {
+            LOGGER.error("An IO exception occurred when attempting to close the level resource. Please see detailed message\n");
 
-        if(requirementsMet) {
-
-            if(!level.isClientSide()) {
-                targetEntity.stopRiding();
-
-                targetEntity.ejectPassengers();
-
-                CompoundTag entityTag = new CompoundTag();
-
-                targetEntity.save(entityTag);
-
-                entityList.add(entityTag);
-
-                targetEntity.remove(RemovalReason.DISCARDED);
-
-                saveEntities(stack, entityList);
-
-                BlockPos position = player.getOnPos();
-
-                level.playSound(null, position, SoundEvents.ENDERMAN_TELEPORT, SoundSource.AMBIENT, 0.5f, 1f);
-            }
-
-            return true;
+            LOGGER.error(e.getMessage());
         }
 
         return super.onLeftClickEntity(stack, player, targetEntity);
