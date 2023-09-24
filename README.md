@@ -1,3 +1,5 @@
+ARCHIVED. No longer being worked on as of 24/09/2023.
+
 # The Emerald Lasso
 A reimagining of the Golden Lasso from Extra Utils 2 and other similar items which allow storing entities in an time as a standalone mod from scratch.
 
